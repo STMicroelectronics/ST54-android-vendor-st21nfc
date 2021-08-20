@@ -137,6 +137,26 @@ public final class NfcWalletAdapter {
         return result;
     }
 
+    public boolean registerIntfActivatedNtfCallback(IIntfActivatedNtfCallback cb) {
+        boolean result = false;
+        try {
+            result = sInterface.registerIntfActivatedNtfCallback(cb);
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean unregisterIntfActivatedNtfCallback() {
+        boolean result = false;
+        try {
+            result = sInterface.unregisterIntfActivatedNtfCallback();
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
     public boolean setForceSAK(boolean enabled, int sak) {
         boolean result = false;
         try {
@@ -151,6 +171,16 @@ public final class NfcWalletAdapter {
         boolean result = false;
         try {
             result = sInterface.seteSEInCardSwitching(inswitching);
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean seteSEInCardSwitchingExt(boolean inswitching, int nbOp) {
+        boolean result = false;
+        try {
+            result = sInterface.seteSEInCardSwitchingExt(inswitching, nbOp);
         } catch (RemoteException e) {
             attemptDeadServiceRecovery(e);
         }

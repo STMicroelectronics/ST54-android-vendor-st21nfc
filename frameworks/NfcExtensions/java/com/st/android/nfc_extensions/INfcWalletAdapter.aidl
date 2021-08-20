@@ -18,6 +18,7 @@
 
 package com.st.android.nfc_extensions;
 
+import com.st.android.nfc_extensions.IIntfActivatedNtfCallback;
 import com.st.android.nfc_extensions.INfcWalletLogCallback;
 import com.st.android.nfc_extensions.INfcWalletRawCallback;
 import com.st.android.nfc_extensions.INfceeActionNtfCallback;
@@ -66,17 +67,37 @@ interface INfcWalletAdapter
     /* Control sequence for card switching
       call this before (true) and after (false) sending card activate /
         deactivate commands to eSE.
-      this method stops card emulation during the switch to ensure no dynamic UID.
+      This method has been replaced by seteSEInCardSwitchingExt, it is not
+      recommended to use seteSEInCardSwitching anymore.
+
+      This method stops card emulation during the switch to ensure no dynamic UID.
       It also ensures SWP is running for parameters updates if OMAPI is using SPI.
       The proper sequence is :
-       - call seteSEInCardSwitching(true);
+       - call seteSEInCardSwitchingExt(true, 2);
        - send previous card deactivate command over OMAPI
        - wait for SW 90 00.
        - wait 250ms // -- ST54H only
        - send new card activate command over OMAPI
        - wait for SW 90 00
-       - wait 250ms // -- ST54H only
-       - call seteSEInCardSwitching(false);
+       - call seteSEInCardSwitchingExt(false, 2);
+
+      The following sequence is also possible, although a bit slower:
+       - call seteSEInCardSwitchingExt(true, 1);
+       - send previous card deactivate command over OMAPI
+       - wait for SW 90 00.
+       - call seteSEInCardSwitchingExt(false, 1);
+       - ...  // be careful, here CE is enabled, so transactions with dynamic UID may happen
+       - call seteSEInCardSwitchingExt(true, 1);
+       - send new card activate command over OMAPI
+       - wait for SW 90 00
+       - call seteSEInCardSwitchingExt(false, 1);
+
+      This method shall also be called when install or delete card (default selectable) APDU sent over SPI,
+      in order to ensure the parameters update is propagated to CLF properly:
+       - call seteSEInCardSwitchingExt(true, 1);
+       - send the install or delete card APDU [8x E4] or [8x E6] (you can do this only for the last APDU if it is a sequence)
+       - wait for SW 90 00.
+       - call seteSEInCardSwitchingExt(false, 1);
        */
     boolean seteSEInCardSwitching(boolean inswitching);
 
@@ -109,4 +130,12 @@ interface INfcWalletAdapter
 
     /* Get content of NFC snoop buffer */
     byte[]  getLogBuffer();
+
+    /* RF_INTF_ACTIVATED_NTF listener */
+    boolean registerIntfActivatedNtfCallback(IIntfActivatedNtfCallback cb);
+    boolean unregisterIntfActivatedNtfCallback();
+
+    /* Allow specify number of CRS updates in seteSEInCardSwitching
+      -- see seteSEInCardSwitching comments above */
+    boolean seteSEInCardSwitchingExt(boolean inswitching, int nbOp);
 }
