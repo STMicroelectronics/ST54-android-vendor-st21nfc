@@ -13,7 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * Provide extensions for the ST implementation of the NFC stack
+ *  Provide extensions of the NFC stack for the ST DTA implementation
+ *
  */
 
 package com.st.android.nfc_dta_extensions;
@@ -25,6 +26,7 @@ import android.util.Log;
 public final class NfcAdapterStDtaExtensions {
     private static final String TAG = "NfcAdapterStExtensions";
 
+    public static final String SERVICE_NAME = "nfc.st_dta_ext";
     // protected by NfcAdapterStDtaExtensions.class, and final after first construction,
     // except for attemptDeadServiceRecovery() when NFC crashes - we accept a
     // best effort recovery
@@ -45,9 +47,9 @@ public final class NfcAdapterStDtaExtensions {
         Log.e(TAG, "NFC Adapter DTA ST Extensions dead - recover by close / open, TODO");
     }
 
-    public boolean initialize() {
+    public int initialize() {
 
-        boolean result = false;
+        int result = 1;
         try {
             result = sInterface.initialize();
         } catch (RemoteException e) {
@@ -65,15 +67,6 @@ public final class NfcAdapterStDtaExtensions {
             attemptDeadServiceRecovery(e);
         }
         return result;
-    }
-
-    /** Set the pattern number of the DTA */
-    public void setPatternNb(int nb) {
-        try {
-            sInterface.setPatternNb(nb);
-        } catch (RemoteException e) {
-            attemptDeadServiceRecovery(e);
-        }
     }
 
     public void setCrVersion(byte ver) {
@@ -108,7 +101,7 @@ public final class NfcAdapterStDtaExtensions {
         }
     }
 
-    public void setFsdFscExtension(boolean ext) {
+    public void setFsdFscExtension(int ext) {
         try {
             sInterface.setFsdFscExtension(ext);
         } catch (RemoteException e) {
@@ -124,38 +117,18 @@ public final class NfcAdapterStDtaExtensions {
         }
     }
 
-    public void setSnepMode(
-            byte role,
-            byte server_type,
-            byte request_type,
-            byte data_type,
-            boolean disc_incorrect_len) {
+    public void setNfcDepWT(byte wt) {
         try {
-            sInterface.setSnepMode(role, server_type, request_type, data_type, disc_incorrect_len);
+            sInterface.setNfcDepWT(wt);
         } catch (RemoteException e) {
             attemptDeadServiceRecovery(e);
         }
     }
 
-    public int enableDiscovery(
-            byte con_poll,
-            byte con_listen_dep,
-            byte con_listen_t4tp,
-            boolean con_listen_t3tp,
-            boolean con_listen_acm,
-            byte con_bitr_f,
-            byte con_bitr_acm) {
+    public int enableDiscovery(boolean rf_mode, int nb, byte con_bitr_f, int lt_cfg) {
         int result = 1;
         try {
-            result =
-                    sInterface.enableDiscovery(
-                            con_poll,
-                            con_listen_dep,
-                            con_listen_t4tp,
-                            con_listen_t3tp,
-                            con_listen_acm,
-                            con_bitr_f,
-                            con_bitr_acm);
+            result = sInterface.enableDiscovery(rf_mode, nb, con_bitr_f, lt_cfg);
         } catch (RemoteException e) {
             attemptDeadServiceRecovery(e);
         }
@@ -166,6 +139,28 @@ public final class NfcAdapterStDtaExtensions {
         boolean result = false;
         try {
             result = sInterface.disableDiscovery();
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean enableNfcAdapter() {
+
+        boolean result = false;
+        try {
+            result = sInterface.enableNfcAdapter();
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean disableNfcAdapter() {
+
+        boolean result = false;
+        try {
+            result = sInterface.disableNfcAdapter();
         } catch (RemoteException e) {
             attemptDeadServiceRecovery(e);
         }

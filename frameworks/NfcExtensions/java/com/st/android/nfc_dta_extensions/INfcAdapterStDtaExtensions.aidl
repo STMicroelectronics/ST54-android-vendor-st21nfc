@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- *  Provide extensions for the ST implementation of the NFC stack
+ *  Provide extensions of the NFC stack for the ST DTA implementation
  */
 
 
@@ -24,20 +24,21 @@ package com.st.android.nfc_dta_extensions;
    */
 interface INfcAdapterStDtaExtensions {
 
-    boolean initialize();
+    int initialize();
     boolean deinitialize();
 
-    void setPatternNb(int nb);
     void setCrVersion(byte ver);
     void setConnectionDevicesLimit(byte cdlA, byte cdlB, byte cdlF, byte cdlV);
     void setListenNfcaUidMode(byte mode);
     void setT4atNfcdepPrio(byte prio);
-    void setFsdFscExtension(boolean ext);
+    void setFsdFscExtension(int ext);
     void setLlcpMode(int miux_mode);
-    void setSnepMode(byte role, byte server_type, byte request_type, byte data_type, boolean disc_incorrect_len);
+    void setNfcDepWT(byte wt);
 
-    int enableDiscovery(byte con_poll, byte con_listen_dep, byte con_listen_t4tp, boolean con_listen_t3tp, boolean con_listen_acm,
-                        byte con_bitr_f, byte con_bitr_acm);
+    int enableDiscovery(boolean rf_mode, int nb, byte con_bitr_f, int lt_cfg);
     boolean disableDiscovery();
+
+    boolean enableNfcAdapter();
+    boolean disableNfcAdapter();
 
 }

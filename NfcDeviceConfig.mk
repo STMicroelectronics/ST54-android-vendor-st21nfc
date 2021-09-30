@@ -42,13 +42,14 @@ PRODUCT_COPY_FILES += \
    vendor/st/nfc/st21nfc/conf/init.system.st21nfc.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/hw/init.stnfc.rc:st
 
 ################################################
-## NFC Forum Digital support
+## NFC Forum testing support (Analog / Digital / TagOp / LLCP/SNEP)
 PRODUCT_PACKAGES += \
-   libnfc_st_dta_jni \
-   libdtaNfaProvider \
+   libnfc_st_dta_jni
+
+## The two following package can be safely removed if you don t plan to use DTA:
+PRODUCT_PACKAGES += \
    libnfc_st_dta \
-   STNFCDta \
-   ixitdata.xml
+   STNFCDta
 
 ################################################
 ## Factory tests support
@@ -61,7 +62,6 @@ PRODUCT_PACKAGES += \
 ## ref: https://source.android.com/devices/bootloader/partitions/product-interfaces?hl=el
 PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
    system/etc/init/hw/init.stnfc.rc \
-   system/etc/ixitdata.xml \
    system/etc/nfcee_access.xml \
    system/lib/android.hardware.nfc@1.0.so \
    system/lib/android.hardware.nfc@1.1.so \
