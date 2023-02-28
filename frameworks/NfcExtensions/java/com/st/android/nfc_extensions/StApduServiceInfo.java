@@ -53,6 +53,7 @@ import android.nfc.cardemulation.HostApduService;
 import android.nfc.cardemulation.OffHostApduService;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
@@ -73,7 +74,7 @@ import org.xmlpull.v1.XmlPullParserException;
 /** @hide */
 public final class StApduServiceInfo implements Parcelable {
     static final String TAG = "APINfc_StApduServiceInfo";
-    static final boolean DBG = true;
+    static final boolean DBG = SystemProperties.getBoolean("persist.nfc.debug_enabled", false);
 
     /** The service that implements this */
     final ResolveInfo mService;

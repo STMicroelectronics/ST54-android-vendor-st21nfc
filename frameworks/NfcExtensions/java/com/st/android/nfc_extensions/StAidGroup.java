@@ -34,30 +34,24 @@
  */
 package com.st.android.nfc_extensions;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
-
 import android.nfc.cardemulation.AidGroup;
 import android.nfc.cardemulation.CardEmulation;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.SystemProperties;
 import android.util.Log;
-/// M: Logs @{
-import android.os.Build;
-/// @}
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
 
 /** @hide */
 public final class StAidGroup implements Parcelable {
 
     static final String TAG = "APINfc_StAidGroup";
-    /// M: Logs @{
-    static final boolean DBG = !("user".equals(Build.TYPE) || "userdebug".equals(Build.TYPE));
-    /// @}
+    static final boolean DBG = SystemProperties.getBoolean("persist.nfc.debug_enabled", false);
 
     final List<String> aids;
     final String category;

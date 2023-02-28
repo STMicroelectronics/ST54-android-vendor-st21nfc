@@ -155,9 +155,6 @@ public class PipesInfo {
         String gateName = "";
 
         switch (data[2]) {
-            case 0x04:
-                gateName = " - Loopback mgmt";
-                break;
             case 0x05:
                 gateName = " - Identity mgmt";
                 break;
