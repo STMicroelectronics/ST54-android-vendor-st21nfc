@@ -26,6 +26,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/com.nxp.mifare.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.nxp.mifare.xml:st \
 
+# To keep P2P support :
+# PRODUCT_COPY_FILES += vendor/st/nfc/st21nfc/conf/android.sofware.nfc.beam.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.sofware.nfc.beam.xml:st
+
 # To support APDU Gate:
 PRODUCT_PACKAGES += \
     com.android.nfc_extras \
