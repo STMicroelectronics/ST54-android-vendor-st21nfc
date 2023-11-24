@@ -1,8 +1,4 @@
-/******************************************************************************
- *
- *
- *  The original Work has been changed by ST Microelectronics S.A.
- *
+/*
  * Copyright (C) 2017 ST Microelectronics S.A.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- ******************************************************************************/
-
+ */
 package com.st.android.nfc_extensions;
 
 parcelable ByteArray;

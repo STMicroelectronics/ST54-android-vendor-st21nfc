@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2019 ST Microelectronics S.A.
+ * Copyright (C) 2019 ST Microelectronics S.A.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  *  Provide extensions for the ST implementation of the NFC stack
  */
-
 package com.st.android.nfc_extensions;
 
 import com.st.android.nfc_extensions.IIntfActivatedNtfCallback;
