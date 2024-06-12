@@ -20,7 +20,6 @@ package com.st.android.nfc_extensions;
 import com.st.android.nfc_extensions.ByteArray;
 import com.st.android.nfc_extensions.INfcSettingsAdapter;
 import com.st.android.nfc_extensions.INfcWalletAdapter;
-import com.st.android.nfc_extensions.INfcChargingAdapter;
 import com.st.android.nfc_extensions.INfcStExtensionsRestartCb;
 import com.st.android.nfc_extensions.INfcNdefNfceeAdapter;
 
@@ -76,14 +75,11 @@ interface INfcAdapterStExtensions {
     byte[] getCustomerData();
 
     INfcWalletAdapter getNfcWalletAdapterInterface();
-    boolean startNfcCharging( boolean switchon);
 
     INfcSettingsAdapter getNfcSettingsAdapterInterface();
 
     void programHceParameters(boolean setConfig, byte bitFrameSdd, byte platformConfig,
             byte selInfo, in byte[] nfcid1, byte rats, in byte[] histBytes);
-
-    INfcChargingAdapter getNfcChargingAdapterInterface();
 
     void seteSeReaderMode(boolean start);
 

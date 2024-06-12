@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014 ST Microelectronics S.A.
+ * Copyright (C) 2014 ST Microelectronics S.A.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  *  Provide extensions for the ST implementation of the NFC stack
  */
-
 package com.st.android.nfc_extensions;
 
 import android.util.Log;
@@ -39,6 +38,12 @@ public class HwInfo {
      */
     public HwInfo(byte[] result) {
         switch (result[CHIP_ID_IDX]) {
+            case 7:
+                this.chipId = "ST21NFCL";
+                break;
+            case 6:
+                this.chipId = "ST54L";
+                break;
             case 5:
                 this.chipId = "ST54J";
                 break;

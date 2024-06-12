@@ -15,7 +15,6 @@
  *
  * Provide extensions for the ST implementation of the NFC stack
  */
-
 package com.st.android.nfc_extensions;
 
 import android.nfc.NfcAdapter;
@@ -804,27 +803,6 @@ public final class NfcAdapterStExtensions {
         }
 
         return null;
-    }
-
-    public INfcChargingAdapter getNfcChargingAdapterInterface() {
-        Log.i(TAG, "getNfcChargingAdapterInterface()");
-        try {
-            return sInterface.getNfcChargingAdapterInterface();
-        } catch (RemoteException e) {
-            attemptDeadServiceRecovery(e);
-        }
-
-        return null;
-    }
-
-    public boolean startNfcCharging(boolean switchon) {
-        Log.i(TAG, "startNfcCharging(" + switchon + ")");
-        try {
-            return sInterface.startNfcCharging(switchon);
-        } catch (RemoteException e) {
-            attemptDeadServiceRecovery(e);
-        }
-        return false;
     }
 
     public void seteSeReaderMode(boolean start) {
