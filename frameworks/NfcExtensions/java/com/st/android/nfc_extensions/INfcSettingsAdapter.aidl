@@ -17,6 +17,7 @@
  */
 package com.st.android.nfc_extensions;
 
+import com.st.android.nfc_extensions.ServiceEntry;
 import com.st.android.nfc_extensions.INfcSettingsCallback;
 import com.st.android.nfc_extensions.DefaultRouteEntry;
 
@@ -30,6 +31,10 @@ import java.util.List;
 interface INfcSettingsAdapter
 {
     /* Interfaces for controlling the behavior of the NFC stack */
+
+    /* Enable / disable tag R/W, P2P, HCE modes */
+    int getModeFlag(int mode);
+    void setModeFlag(int mode, int flag);
 
     /* Low-level control of the SWP interfaces */
     boolean isUiccConnected();
@@ -54,6 +59,19 @@ interface INfcSettingsAdapter
     /* Get notifications from NFC service when Nfc Settings need update */
     void registerNfcSettingsCallback(INfcSettingsCallback cb);
     void unregisterNfcSettingsCallback(INfcSettingsCallback cb);
+
+
+    /* For GSMA TS26 requirements on AID routing table management */
+
+    boolean isRoutingTableOverflow();
+    boolean isShowOverflowMenu();
+
+    List<ServiceEntry> getServiceEntryList(int userHandle);
+    boolean testServiceEntryList(in List<ServiceEntry> proposal);
+    void commitServiceEntryList(in List<ServiceEntry> proposal);
+
+    List<ServiceEntry> getNonAidBasedServiceEntryList(int userHandle);
+    void commitNonAidBasedServiceEntryList(in List<ServiceEntry> proposal);
 
     void setDefaultUserRoutes(in List<DefaultRouteEntry> userRoutes);
     List<DefaultRouteEntry> getDefaultUserRoutes();

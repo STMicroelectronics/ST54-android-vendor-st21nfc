@@ -44,6 +44,46 @@ public class NfcSettingsAdapter {
 
     public static final String SERVICE_SETTINGS_NAME = "nfc_settings";
 
+    /**
+     * The mode flag to control each NFC mode. MODE_READER is used to switch Tag read/write mode
+     *
+     * @hide
+     * @internal
+     */
+    public static final int MODE_READER = 1;
+
+    /**
+     * The mode flag to control each NFC mode. MODE_HCE is used to switch card emulation mode
+     *
+     * @hide
+     * @internal
+     */
+    public static final int MODE_HCE = 2;
+
+    /**
+     * The mode flag to control each NFC mode. MODE_P2P is used to switch P2P mode
+     *
+     * @hide
+     * @internal
+     */
+    public static final int MODE_P2P = 4;
+
+    /**
+     * To disable each NFC mode.
+     *
+     * @hide
+     * @internal
+     */
+    public static final int FLAG_OFF = 0;
+
+    /**
+     * To enable each NFC mode.
+     *
+     * @hide
+     * @internal
+     */
+    public static final int FLAG_ON = 1;
+
     /* Below values must be aligned with SecureElementSelector code */
     public static final String SE_SIM1 = "SIM1";
     public static final String SE_SIM2 = "SIM2";
@@ -103,6 +143,164 @@ public class NfcSettingsAdapter {
                             + NfcAdapterStExtensions.SERVICE_NAME);
         }
         return result;
+    }
+
+    /**
+     * Query specific NFC mode.
+     *
+     * @param one of the NFC mode, candidates are MODE_READER, MODE_P2P or MODE_HCE.
+     * @return FLAG_ON or FLAG_OFF, -1 for failure
+     * @hide
+     * @internal
+     */
+    public int getModeFlag(int mode) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "getModeFlag() - sService = null");
+                return -1;
+            }
+            int flag = sService.getModeFlag(mode);
+
+            Log.d(TAG, "getModeFlag()" + settingModeToString(mode, flag));
+
+            return flag;
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "getModeFlag() - e = " + e.toString());
+            return -1;
+        }
+    }
+
+    /**
+     * Control specific NFC mode.
+     *
+     * @param one of the NFC mode, candidates are MODE_READER, MODE_P2P or MODE_HCE.
+     * @param FLAG_ON or FLAG_OFF
+     * @hide
+     * @internal
+     */
+    public void setModeFlag(int mode, int flag) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "setModeFlag() - sService = null");
+                return;
+            }
+            // Log.d(TAG, "sService.setModeFlag(mode)");
+            Log.d(TAG, "setModeFlag()" + settingModeToString(mode, flag));
+            sService.setModeFlag(mode, flag);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "setModeFlag() - e = " + e.toString());
+        }
+    }
+
+    /**
+     * GSMA feature: is there an overflow of the routing table?
+     *
+     * @hide
+     * @internal
+     */
+    public boolean isRoutingTableOverflow() {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "isRoutingTableOverflow() - sService = null");
+                return false;
+            }
+            Log.d(TAG, "sService.isRoutingTableOverflow()");
+            return sService.isRoutingTableOverflow();
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "isRoutingTableOverflow() - e = " + e.toString());
+            return false;
+        }
+    }
+
+    /**
+     * GSMA feature: Should overflow menu be shown to user? Yes if GSMA mode and there is at least 1
+     * service not enabled.
+     *
+     * @hide
+     * @internal
+     */
+    public boolean isShowOverflowMenu() {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "isShowOverflowMenu() - sService = null");
+                return false;
+            }
+            Log.d(TAG, "sService.isShowOverflowMenu()");
+            return sService.isShowOverflowMenu();
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "isShowOverflowMenu() - e = " + e.toString());
+            return false;
+        }
+    }
+
+    /**
+     * GSMA feature: Retrieve map of services with AIDs registered in the category "OTHER", and for
+     * each one its current state.
+     *
+     * @hide
+     * @internal
+     */
+    public List<ServiceEntry> getServiceEntryList(int userHandle) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "getServiceEntryList() - sService = null");
+                return null;
+            }
+            Log.d(TAG, "sService.getServiceEntryList()");
+            return sService.getServiceEntryList(userHandle);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "getServiceEntryList() - e = " + e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * GSMA feature: Test if a proposal for enabled/disabled services can fit in the AID routing
+     * table of the NFC controller.
+     *
+     * @hide
+     * @internal
+     */
+    public boolean testServiceEntryList(List<ServiceEntry> proposal) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "testServiceEntryList() - sService = null");
+                return false;
+            }
+            Log.d(TAG, "sService.testServiceEntryList()");
+            return sService.testServiceEntryList(proposal);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "testServiceEntryList() - e = " + e.toString());
+            return false;
+        }
+    }
+
+    /**
+     * GSMA feature: Commit a new state of enabled/disabled services. The operation fails silently
+     * in case of error.
+     *
+     * @hide
+     * @internal
+     */
+    public void commitServiceEntryList(List<ServiceEntry> proposal) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "commitServiceEntryList() - sService = null");
+                return;
+            }
+            Log.d(TAG, "sService.commitServiceEntryList()");
+            sService.commitServiceEntryList(proposal);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "commitServiceEntryList() - e = " + e.toString());
+            return;
+        }
     }
 
     /**
@@ -223,6 +421,79 @@ public class NfcSettingsAdapter {
             // attemptDeadServiceRecovery(e);
             Log.e(TAG, "unregisterNfcSettingsCallback() e = " + e.toString());
         }
+    }
+
+    /**
+     * GSMA feature: Retrieve map of services with AIDs registered in the category "OTHER", and for
+     * each one its current state.
+     *
+     * @hide
+     * @internal
+     */
+    public List<ServiceEntry> getNonAidBasedServiceEntryList(int userHandle) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "getNonAidBasedServiceEntryList() - sService = null");
+                return null;
+            }
+            Log.d(TAG, "sService.getNonAidBasedServiceEntryList()");
+            return sService.getNonAidBasedServiceEntryList(userHandle);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "getNonAidBasedServiceEntryList() - e = " + e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * GSMA feature: Commit a new state of enabled/disabled services. The operation fails silently
+     * in case of error.
+     *
+     * @hide
+     * @internal
+     */
+    public void commitNonAidBasedServiceEntryList(List<ServiceEntry> proposal) {
+        try {
+            if (sService == null) {
+                Log.e(TAG, "commitNonAidBasedServiceEntryList() - sService = null");
+                return;
+            }
+            Log.d(TAG, "sService.commitNonAidBasedServiceEntryList()");
+            sService.commitNonAidBasedServiceEntryList(proposal);
+        } catch (RemoteException e) {
+            // attemptDeadServiceRecovery(e);
+            Log.e(TAG, "commitNonAidBasedServiceEntryList() - e = " + e.toString());
+            return;
+        }
+    }
+
+    String settingModeToString(int mode, int flag) {
+        String valueString = "";
+
+        switch (mode) {
+            case MODE_READER:
+                valueString = "MODE_READER ";
+                break;
+            case MODE_P2P:
+                valueString = "MODE_P2P ";
+                break;
+            case MODE_HCE:
+                valueString = "MODE_HCE ";
+                break;
+            default:
+                valueString = "Unknown mode ";
+                break;
+        }
+
+        if (flag == FLAG_OFF) {
+            valueString += "FLAG_OFF";
+        } else if (flag == FLAG_ON) {
+            valueString += "FLAG_ON";
+        } else {
+            valueString += "unknown flag value";
+        }
+
+        return valueString;
     }
 
     public static final String DEFAULT_AID_ROUTE = "default_aid_route";
