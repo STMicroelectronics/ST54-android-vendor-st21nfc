@@ -13,7 +13,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.st.android.nfc_extensions;
 
 import android.os.RemoteException;
@@ -280,6 +279,26 @@ public final class NfcWalletAdapter {
         boolean result = false;
         try {
             result = sInterface.unregisterPollingLoopCallback();
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean registerCeApduCallback(INfcWalletCeApduCallback cb) {
+        boolean result = false;
+        try {
+            result = sInterface.registerCeApduCallback(cb);
+        } catch (RemoteException e) {
+            attemptDeadServiceRecovery(e);
+        }
+        return result;
+    }
+
+    public boolean unregisterCeApduCallback() {
+        boolean result = false;
+        try {
+            result = sInterface.unregisterCeApduCallback();
         } catch (RemoteException e) {
             attemptDeadServiceRecovery(e);
         }

@@ -1,6 +1,8 @@
 # Device configuration file to be included from device.mk for the vendor image, e.g.
 #
-#   -include vendor/st/nfc/st21nfc/NfcDeviceConfigVendor.mk
+#   -include vendor/st/opensource/commonsys/frameworks/st21nfc/NfcDeviceConfigVendor.mk
+#
+# Please make sure to include st in allowed list in build/make/core/tasks/vendor_module_check.mk
 
 ######################################################################
 ##########################  VENDOR image  ############################
@@ -28,14 +30,14 @@ PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.se.omapi.ese.x
 # Stack configuration files (common for ST stack and AOSP stack)
 ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
    PRODUCT_COPY_FILES += \
-   vendor/st/nfc/system/nfc/conf/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf:st \
-   vendor/st/nfc/hardware/st/nfc/conf/libnfc-hal-st.conf.st54l:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf:st
+   vendor/st/opensource/commonsys/system/nfc/conf/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf:st \
+   vendor/st/opensource/halimpl/conf/libnfc-hal-st.conf.st54l:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf:st
 
 else
   # Configuration files for user build, remove some logs for GSMA certif
    PRODUCT_COPY_FILES += \
-   vendor/st/nfc/system/nfc/conf/libnfc-nci.conf.user:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf:st \
-   vendor/st/nfc/hardware/st/nfc/conf/libnfc-hal-st.conf.st54l.user:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf:st
+   vendor/st/opensource/commonsys/system/nfc/conf/libnfc-nci.conf.user:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf:st \
+   vendor/st/opensource/halimpl/conf/libnfc-hal-st.conf.st54l.user:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf:st
 
 endif
 
@@ -51,5 +53,5 @@ PRODUCT_PACKAGES += \
 
 # Init.rc files
 PRODUCT_COPY_FILES += \
-   vendor/st/nfc/st21nfc/conf/init.vendor.st21nfc.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.stnfc.rc:st
+   vendor/st/opensource/commonsys/frameworks/st21nfc/conf/init.vendor.st21nfc.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.stnfc.rc:st
 

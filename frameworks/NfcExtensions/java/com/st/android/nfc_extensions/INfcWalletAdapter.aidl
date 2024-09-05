@@ -22,6 +22,7 @@ import com.st.android.nfc_extensions.INfcWalletLogCallback;
 import com.st.android.nfc_extensions.INfcWalletPollingLoopCallback;
 import com.st.android.nfc_extensions.INfcWalletRawCallback;
 import com.st.android.nfc_extensions.INfceeActionNtfCallback;
+import com.st.android.nfc_extensions.INfcWalletCeApduCallback;
 
 /**
  * @hide
@@ -148,4 +149,7 @@ interface INfcWalletAdapter
     /* Readers polling loop spy support */
     boolean registerPollingLoopCallback(INfcWalletPollingLoopCallback cb);
     boolean unregisterPollingLoopCallback();
+
+    boolean registerCeApduCallback(INfcWalletCeApduCallback cb);
+    boolean unregisterCeApduCallback();
 }

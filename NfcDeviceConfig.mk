@@ -1,6 +1,6 @@
 # Device configuration file to be included from device.mk file, e.g.
 #
-#   -include vendor/st/nfc/st21nfc/NfcDeviceConfig.mk
+#   -include vendor/st/opensource/commonsys/frameworks/st21nfc/NfcDeviceConfig.mk
 
 ######################################################################
 ##########################  SYSTEM image  ############################
@@ -32,11 +32,11 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras.xml
 
 PRODUCT_COPY_FILES += \
-   vendor/st/nfc/st21nfc/conf/nfcee_access.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/nfcee_access.xml:st
+   vendor/st/opensource/commonsys/frameworks/st21nfc/conf/nfcee_access.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/nfcee_access.xml:st
 
 # Init.rc files
 PRODUCT_COPY_FILES += \
-   vendor/st/nfc/st21nfc/conf/init.system.st21nfc.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/hw/init.stnfc.rc:st
+   vendor/st/opensource/commonsys/frameworks/st21nfc/conf/init.system.st21nfc.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/hw/init.stnfc.rc:st
 
 ################################################
 ## NFC Forum testing support (Analog / Digital / TagOp / LLCP/SNEP)
